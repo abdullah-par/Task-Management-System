@@ -1,0 +1,130 @@
+<div class="page-wrapper">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div>
+        <span class="page-badge">Task Manager</span>
+        <h1 class="page-title">My Tasks</h1>
+        <p class="page-subtitle">Stay organized, stay productive</p>
+      </div>
+      <a routerLink="/tasks/new" class="btn btn-primary" id="btn-add-task">
+        <span class="btn-icon">+</span> Add New Task
+      </a>
+    </div>
+  </header>
+
+  <!-- Alerts -->
+  <div class="alert alert-success" *ngIf="successMessage">
+    <span>✓</span> {{ successMessage }}
+  </div>
+  <div class="alert alert-error" *ngIf="errorMessage">
+    <span>⚠</span> {{ errorMessage }}
+    <button class="alert-close" (click)="errorMessage = ''">×</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">{{ totalCount }}</div>
+      <div class="stat-label">Total Tasks</div>
+    </div>
+    <div class="stat-card completed">
+      <div class="stat-value">{{ completedCount }}</div>
+      <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card pending">
+      <div class="stat-value">{{ pendingCount }}</div>
+      <div class="stat-label">Pending</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="search-wrapper">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        placeholder="Search tasks..."
+        class="search-input"
+        id="search-tasks"
+        (input)="onSearch($event)"
+      />
+    </div>
+
+    <div class="filter-group">
+      <button class="filter-btn" [class.active]="filterStatus === 'all'"       (click)="setStatusFilter('all')"       id="filter-all">All</button>
+      <button class="filter-btn" [class.active]="filterStatus === 'pending'"   (click)="setStatusFilter('pending')"   id="filter-pending">Pending</button>
+      <button class="filter-btn" [class.active]="filterStatus === 'completed'" (click)="setStatusFilter('completed')" id="filter-completed">Completed</button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading tasks...</p>
+  </div>
+
+  <!-- Empty -->
+  <div class="empty-state" *ngIf="!isLoading && filteredTasks.length === 0 && !errorMessage">
+    <div class="empty-icon">📋</div>
+    <h3>No tasks found</h3>
+    <p *ngIf="tasks.length === 0">Create your first task to get started!</p>
+    <p *ngIf="tasks.length > 0">Try adjusting your filters or search query.</p>
+    <a routerLink="/tasks/new" class="btn btn-primary" *ngIf="tasks.length === 0">Add First Task</a>
+  </div>
+
+  <!-- Task Table -->
+  <div class="table-card" *ngIf="!isLoading && filteredTasks.length > 0">
+    <table class="task-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Task</th>
+          <th>Due Date</th>
+          <th>Created</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let task of filteredTasks" class="task-row" [class.completed-row]="task.isCompleted">
+          <td class="status-cell">
+            <button
+              class="toggle-btn"
+              [class.checked]="task.isCompleted"
+              (click)="toggleComplete(task)"
+              [id]="'toggle-' + task.id"
+              [title]="task.isCompleted ? 'Mark as pending' : 'Mark as complete'"
+            >
+              <span *ngIf="task.isCompleted">✓</span>
+            </button>
+          </td>
+
+          <td class="title-cell">
+            <div class="task-title" [class.strikethrough]="task.isCompleted">{{ task.title }}</div>
+            <div class="task-desc" *ngIf="task.description">
+              {{ task.description.length > 70 ? task.description.substring(0, 70) + '…' : task.description }}
+            </div>
+          </td>
+
+          <td class="date-cell">
+            <span [class.overdue]="isOverdue(task)">
+              {{ formatDate(task.dueDate) }}
+              <span *ngIf="isOverdue(task)" class="overdue-tag">Overdue</span>
+            </span>
+          </td>
+
+          <td class="date-cell">{{ formatDate(task.createdAt) }}</td>
+
+          <td class="actions-cell">
+            <a [routerLink]="['/tasks/edit', task.id]" class="btn-action btn-edit" [id]="'edit-' + task.id" title="Edit">✏️</a>
+            <button class="btn-action btn-delete" (click)="deleteTask(task)" [id]="'delete-' + task.id" title="Delete">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="table-footer">
+      Showing {{ filteredTasks.length }} of {{ totalCount }} tasks
+    </div>
+  </div>
+</div>

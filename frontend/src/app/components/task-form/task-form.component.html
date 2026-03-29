@@ -1,0 +1,95 @@
+<div class="page-wrapper">
+  <!-- Back Nav -->
+  <div class="back-nav">
+    <a routerLink="/tasks" class="back-link" id="btn-back">← Back to Tasks</a>
+  </div>
+
+  <!-- Header -->
+  <header class="form-header">
+    <span class="page-badge">{{ isEditMode ? 'Edit Task' : 'New Task' }}</span>
+    <h1 class="page-title">{{ isEditMode ? 'Update Task' : 'Create Task' }}</h1>
+    <p class="page-subtitle">{{ isEditMode ? 'Modify the details below to update your task' : 'Fill in the details to create a new task' }}</p>
+  </header>
+
+  <!-- Skeleton -->
+  <div class="skeleton-card" *ngIf="isLoading">
+    <div class="skeleton-line long"></div>
+    <div class="skeleton-line medium"></div>
+    <div class="skeleton-line short"></div>
+  </div>
+
+  <!-- Error -->
+  <div class="alert alert-error" *ngIf="errorMessage">
+    <span>⚠</span> {{ errorMessage }}
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form-card" *ngIf="!isLoading" id="task-form">
+
+    <!-- Title -->
+    <div class="field-group">
+      <label for="field-title" class="field-label">Title <span class="required">*</span></label>
+      <input
+        id="field-title"
+        type="text"
+        formControlName="title"
+        class="field-input"
+        [class.invalid]="isInvalid('title')"
+        placeholder="Enter a clear, concise task title..."
+        autocomplete="off"
+      />
+      <div class="field-error" *ngIf="isInvalid('title')">{{ getError('title') }}</div>
+      <div class="char-count">{{ (f['title'].value?.length ?? 0) }}/200</div>
+    </div>
+
+    <!-- Description -->
+    <div class="field-group">
+      <label for="field-description" class="field-label">Description</label>
+      <textarea
+        id="field-description"
+        formControlName="description"
+        class="field-input field-textarea"
+        [class.invalid]="isInvalid('description')"
+        placeholder="Add more context, notes, or steps for this task..."
+        rows="4"
+      ></textarea>
+      <div class="field-error" *ngIf="isInvalid('description')">{{ getError('description') }}</div>
+      <div class="char-count">{{ (f['description'].value?.length ?? 0) }}/1000</div>
+    </div>
+
+    <!-- Due Date -->
+    <div class="field-group">
+      <label for="field-duedate" class="field-label">Due Date</label>
+      <input
+        id="field-duedate"
+        type="date"
+        formControlName="dueDate"
+        class="field-input field-input-date"
+        [min]="today"
+      />
+    </div>
+
+    <!-- Status Toggle -->
+    <div class="field-group">
+      <div class="toggle-row">
+        <div>
+          <div class="field-label" style="margin-bottom:0">Mark as Completed</div>
+          <div class="toggle-hint">Toggle if this task is already done</div>
+        </div>
+        <label class="toggle-switch" for="field-completed">
+          <input id="field-completed" type="checkbox" formControlName="isCompleted" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+      <a routerLink="/tasks" class="btn btn-secondary" id="btn-cancel">Cancel</a>
+      <button type="submit" class="btn btn-primary" id="btn-submit" [disabled]="isSubmitting">
+        <span class="spinner-sm" *ngIf="isSubmitting"></span>
+        {{ isSubmitting ? 'Saving…' : (isEditMode ? 'Update Task' : 'Create Task') }}
+      </button>
+    </div>
+  </form>
+</div>

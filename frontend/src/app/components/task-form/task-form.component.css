@@ -1,0 +1,270 @@
+.page-wrapper {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ─── Back Nav ────────────────────────────────────────────────────────── */
+.back-nav { margin-bottom: 1.25rem; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color var(--transition);
+}
+
+.back-link:hover { color: var(--primary); }
+
+/* ─── Header ──────────────────────────────────────────────────────────── */
+.form-header { margin-bottom: 1.75rem; }
+
+.page-badge {
+  display: inline-block;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  margin-top: 0.2rem;
+}
+
+/* ─── Alert ───────────────────────────────────────────────────────────── */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid;
+}
+
+.alert-error {
+  background: var(--danger-bg);
+  border-color: var(--danger-border);
+  color: var(--danger);
+}
+
+/* ─── Skeleton ────────────────────────────────────────────────────────── */
+.skeleton-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: var(--shadow-xs);
+}
+
+.skeleton-line {
+  height: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  margin-bottom: 0.85rem;
+}
+
+.skeleton-line.long   { width: 75%; }
+.skeleton-line.medium { width: 55%; }
+.skeleton-line.short  { width: 35%; }
+
+/* ─── Form Card ───────────────────────────────────────────────────────── */
+.task-form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  padding: 2rem;
+}
+
+/* ─── Field Group ─────────────────────────────────────────────────────── */
+.field-group { margin-bottom: 1.25rem; }
+
+.field-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.required { color: var(--danger); }
+
+.field-input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-light);
+}
+
+.field-input.invalid { border-color: var(--danger); }
+
+.field-input::placeholder { color: var(--text-muted); }
+
+.field-textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.78rem;
+  margin-top: 0.3rem;
+}
+
+.char-count {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 0.2rem;
+}
+
+/* ─── Date input (OS-matched) ─────────────────────────────────────────── */
+input[type="date"].field-input { color-scheme: light; }
+
+/* ─── Toggle (Completed status switch) ───────────────────────────────── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+}
+
+.toggle-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: var(--border-strong);
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  background: var(--text-inverse);
+  border-radius: 50%;
+  transition: transform var(--transition);
+  box-shadow: var(--shadow-xs);
+}
+
+input:checked + .slider { background: var(--success); }
+input:checked + .slider::before { transform: translateX(18px); }
+
+/* ─── Form Actions ────────────────────────────────────────────────────── */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background var(--transition), box-shadow var(--transition);
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: var(--text-inverse);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  background: var(--bg);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.spinner-sm {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: var(--text-inverse);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

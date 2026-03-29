@@ -1,0 +1,25 @@
+<nav class="navbar">
+  <div class="nav-inner">
+    <a routerLink="/tasks" class="nav-brand" id="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-text">TaskFlow</span>
+    </a>
+    <div class="nav-links">
+      <a
+        routerLink="/tasks"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+        class="nav-link"
+        id="nav-tasks"
+      >Tasks</a>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <p>TaskFlow &copy; {{ year }} &mdash; Built with Angular + .NET Core</p>
+</footer>
