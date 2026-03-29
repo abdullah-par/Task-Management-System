@@ -1,32 +1,70 @@
-Use Case: Task Management System (Mini To-Do App)
-📌 Problem Statement
-Build a Task Management Web Application where users can create, view, update, and delete tasks. The application should demonstrate full-stack capabilities using .NET Core 6 (MVC + Web API) for the backend and Angular for the frontend.
-🎯 Functional Requirements
-👤 User Features
-View a list of tasks
-Add a new task
-Edit an existing task
-Delete a task
-Mark a task as “Completed” or “Pending”
-⚙️ Backend Requirements (C# + .NET Core 6 Web API)
-Create a Task API with endpoints:
-GET /api/tasks → Get all tasks
-GET /api/tasks/{id} → Get task by ID
-POST /api/tasks → Create a new task
-PUT /api/tasks/{id} → Update task
-DELETE /api/tasks/{id} → Delete task
-Use Entity Framework Core (or in-memory DB for simplicity)
-Implement proper model validation
-Use basic layered architecture (Controller → Service → Repository)
-🖥️ Frontend Requirements (Angular)
-Create a simple UI with:
-Task list table/grid
-Form to add/edit tasks
-Use Angular services to call the Web API
-Implement:  
-Routing (List & Create/Edit pages)
-Basic form validation
-🧱 MVC Requirement (Optional but Recommended)
-Create a simple .NET Core MVC page (Razor View) to:
-Display tasks (server-side rendering)
-OR consume the API and show results
+# 📝 Task Management System (Enterprise Edition)
+
+A professional, high-performance task management application built with a **Clean Layered Architecture** (.NET 9 Web API) and a **Reactive Frontend** (Angular 19+ with Signals).
+
+---
+
+## 🏗 Technology Stack
+
+- **Backend:** .NET 9 Web API (C#)
+- **Frontend:** Angular 19+ (Standalone Components & Signals)
+- **Architecture:** Layered Pattern (Controller -> Service -> Repository)
+- **Database:** Entity Framework Core (In-Memory for demonstration)
+- **Design:** GitHub-inspired Dark Theme (Enterprise CSS)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally on your machine.
+
+### 1. Prerequisites
+- **.NET SDK 9.0+**
+- **Node.js 20+**
+- **Angular CLI (`npm install -g @angular/cli`)**
+
+### 2. Clone the Repository
+```bash
+git clone https://github.com/abdullah-par/Task-Management-System.git
+cd Task-Management-System
+```
+
+### 3. Run the Backend API
+```bash
+cd backend
+dotnet restore
+dotnet run --launch-profile http
+```
+- **API URL:** `https://localhost:7051/api/tasks` (Standard)
+- **Swagger UI:** `https://localhost:7051/openapi/v1.json` (OpenAPI Spec)
+
+### 4. Run the Angular Frontend
+Open a **new** terminal in the root directory:
+```bash
+cd frontend
+npm install
+npm start
+```
+- **Frontend URL:** `http://localhost:4200`
+
+---
+
+## 🛠 Key Features
+
+- **Full CRUD Support:** Create, Read, Update, and Delete tasks. 📝
+- **Reactive UI:** Uses Angular **Signals** for instant data updates without page reloads. ⚡
+- **Enterprise Dark Mode:** Calibrated cool-grey surfaces for maximum readability. 🌙
+- **Status Badges:** Real-time visibility of Pending (Amber) and Completed (Green) tasks. 🏷️
+- **Automatic History:** Tracks `CreatedAt` and `UpdatedAt` timestamps for every task. 🕒
+
+---
+
+## 🛡️ Architecture Highlights
+- **Service Layer Pattern:** Business logic is isolated from the Controllers.
+- **Repository Pattern:** Database operations are abstracted for easy testing.
+- **DTO-Based Communication:** Clear input/output separation for better security and structure.
+
+---
+
+## 📄 License
+This project is for educational and training purposes.

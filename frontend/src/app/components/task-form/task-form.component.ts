@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
@@ -13,11 +13,13 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskFormComponent implements OnInit {
   taskForm!: FormGroup;
-  isEditMode = false;
-  taskId: number | null = null;
-  isLoading = false;
-  isSubmitting = false;
-  errorMessage = '';
+  
+  isEditMode = signal<boolean>(false);
+  taskId = signal<number | null>(null);
+  isLoading = signal<boolean>(false);
+  isSubmitting = signal<boolean>(false);
+  errorMessage = signal<string>('');
+  
   today = new Date().toISOString().split('T')[0];
 
   constructor(
@@ -29,12 +31,18 @@ export class TaskFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEditMode = true;
-      this.taskId = +id;
-      this.loadTask(this.taskId);
-    }
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode.set(true);
+        this.taskId.set(+id);
+        this.loadTask(+id);
+      } else {
+        this.isEditMode.set(false);
+        this.taskId.set(null);
+        this.taskForm.reset({ isCompleted: false });
+      }
+    });
   }
 
   buildForm(): void {
@@ -47,8 +55,9 @@ export class TaskFormComponent implements OnInit {
   }
 
   loadTask(id: number): void {
-    this.isLoading = true;
-    this.taskService.getTaskById(id).subscribe({
+    this.isLoading.set(true);
+    this.errorMessage.set('');
+    this.taskService.getTask(id).subscribe({
       next: (task) => {
         this.taskForm.patchValue({
           title:       task.title,
@@ -56,11 +65,11 @@ export class TaskFormComponent implements OnInit {
           isCompleted: task.isCompleted,
           dueDate:     task.dueDate ? task.dueDate.split('T')[0] : '',
         });
-        this.isLoading = false;
+        this.isLoading.set(false);
       },
       error: (err) => {
-        this.errorMessage = err.message;
-        this.isLoading = false;
+        this.errorMessage.set(err.message);
+        this.isLoading.set(false);
       },
     });
   }
@@ -71,8 +80,8 @@ export class TaskFormComponent implements OnInit {
       return;
     }
 
-    this.isSubmitting = true;
-    this.errorMessage = '';
+    this.isSubmitting.set(true);
+    this.errorMessage.set('');
 
     const v = this.taskForm.value;
     const dto = {
@@ -82,15 +91,19 @@ export class TaskFormComponent implements OnInit {
       dueDate:     v.dueDate || undefined,
     };
 
-    const request$ = this.isEditMode && this.taskId
-      ? this.taskService.updateTask(this.taskId, dto)
+    const id = this.taskId();
+    const request$ = (this.isEditMode() && id !== null)
+      ? this.taskService.updateTask(id, dto)
       : this.taskService.createTask(dto);
 
     request$.subscribe({
-      next: () => this.router.navigate(['/tasks']),
+      next: () => {
+        this.taskForm.reset();
+        this.router.navigate(['/tasks']);
+      },
       error: (err) => {
-        this.errorMessage = err.message;
-        this.isSubmitting = false;
+        this.errorMessage.set(err.message);
+        this.isSubmitting.set(false);
       },
     });
   }

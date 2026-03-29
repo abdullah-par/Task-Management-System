@@ -14,12 +14,12 @@
   </header>
 
   <!-- Alerts -->
-  <div class="alert alert-success" *ngIf="successMessage">
-    <span>✓</span> {{ successMessage }}
+  <div class="alert alert-success" *ngIf="successMessage()">
+    <span>✓</span> {{ successMessage() }}
   </div>
-  <div class="alert alert-error" *ngIf="errorMessage">
-    <span>⚠</span> {{ errorMessage }}
-    <button class="alert-close" (click)="errorMessage = ''">×</button>
+  <div class="alert alert-error" *ngIf="errorMessage()">
+    <span>⚠</span> {{ errorMessage() }}
+    <button class="alert-close" (click)="errorMessage.set('')">×</button>
   </div>
 
   <!-- Stats -->
@@ -52,29 +52,29 @@
     </div>
 
     <div class="filter-group">
-      <button class="filter-btn" [class.active]="filterStatus === 'all'"       (click)="setStatusFilter('all')"       id="filter-all">All</button>
-      <button class="filter-btn" [class.active]="filterStatus === 'pending'"   (click)="setStatusFilter('pending')"   id="filter-pending">Pending</button>
-      <button class="filter-btn" [class.active]="filterStatus === 'completed'" (click)="setStatusFilter('completed')" id="filter-completed">Completed</button>
+      <button class="filter-btn" [class.active]="filterStatus() === 'all'"       (click)="setStatusFilter('all')"       id="filter-all">All</button>
+      <button class="filter-btn" [class.active]="filterStatus() === 'pending'"   (click)="setStatusFilter('pending')"   id="filter-pending">Pending</button>
+      <button class="filter-btn" [class.active]="filterStatus() === 'completed'" (click)="setStatusFilter('completed')" id="filter-completed">Completed</button>
     </div>
   </div>
 
   <!-- Loading -->
-  <div class="loading-state" *ngIf="isLoading">
+  <div class="loading-state" *ngIf="isLoading()">
     <div class="spinner"></div>
     <p>Loading tasks...</p>
   </div>
 
   <!-- Empty -->
-  <div class="empty-state" *ngIf="!isLoading && filteredTasks.length === 0 && !errorMessage">
+  <div class="empty-state" *ngIf="!isLoading() && filteredTasks().length === 0 && !errorMessage()">
     <div class="empty-icon">📋</div>
     <h3>No tasks found</h3>
-    <p *ngIf="tasks.length === 0">Create your first task to get started!</p>
-    <p *ngIf="tasks.length > 0">Try adjusting your filters or search query.</p>
-    <a routerLink="/tasks/new" class="btn btn-primary" *ngIf="tasks.length === 0">Add First Task</a>
+    <p *ngIf="tasks().length === 0">Create your first task to get started!</p>
+    <p *ngIf="tasks().length > 0">Try adjusting your filters or search query.</p>
+    <a routerLink="/tasks/new" class="btn btn-primary" *ngIf="tasks().length === 0">Add First Task</a>
   </div>
 
   <!-- Task Table -->
-  <div class="table-card" *ngIf="!isLoading && filteredTasks.length > 0">
+  <div class="table-card" *ngIf="!isLoading() && filteredTasks().length > 0">
     <table class="task-table">
       <thead>
         <tr>
@@ -86,17 +86,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let task of filteredTasks" class="task-row" [class.completed-row]="task.isCompleted">
+        <tr *ngFor="let task of filteredTasks()" class="task-row" [class.completed-row]="task.isCompleted">
           <td class="status-cell">
-            <button
-              class="toggle-btn"
-              [class.checked]="task.isCompleted"
-              (click)="toggleComplete(task)"
-              [id]="'toggle-' + task.id"
-              [title]="task.isCompleted ? 'Mark as pending' : 'Mark as complete'"
-            >
-              <span *ngIf="task.isCompleted">✓</span>
-            </button>
+            <span class="status-badge" [class.completed]="task.isCompleted" (click)="toggleComplete(task)">
+              {{ task.isCompleted ? 'Completed' : 'Pending' }}
+            </span>
           </td>
 
           <td class="title-cell">
@@ -116,7 +110,7 @@
           <td class="date-cell">{{ formatDate(task.createdAt) }}</td>
 
           <td class="actions-cell">
-            <a [routerLink]="['/tasks/edit', task.id]" class="btn-action btn-edit" [id]="'edit-' + task.id" title="Edit">✏️</a>
+            <a [routerLink]="['/tasks', task.id, 'edit']" class="btn-action btn-edit" [id]="'edit-' + task.id" title="Edit">✏️</a>
             <button class="btn-action btn-delete" (click)="deleteTask(task)" [id]="'delete-' + task.id" title="Delete">🗑️</button>
           </td>
         </tr>
@@ -124,7 +118,7 @@
     </table>
 
     <div class="table-footer">
-      Showing {{ filteredTasks.length }} of {{ totalCount }} tasks
+      Showing {{ filteredTasks().length }} of {{ totalCount }} tasks
     </div>
   </div>
 </div>

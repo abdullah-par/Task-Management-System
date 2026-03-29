@@ -3,20 +3,21 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TaskItem, CreateTaskDto, UpdateTaskDto } from '../models/task.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
-  private readonly apiUrl = 'http://localhost:5046/api/tasks';
+  private readonly apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
-  getAllTasks(): Observable<TaskItem[]> {
+  getTasks(): Observable<TaskItem[]> {
     return this.http.get<TaskItem[]>(this.apiUrl).pipe(catchError(this.handleError));
   }
 
-  getTaskById(id: number): Observable<TaskItem> {
+  getTask(id: number): Observable<TaskItem> {
     return this.http.get<TaskItem>(`${this.apiUrl}/${id}`).pipe(catchError(this.handleError));
   }
 

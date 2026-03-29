@@ -130,7 +130,7 @@
 
 .field-input.invalid { border-color: var(--danger); }
 
-.field-input::placeholder { color: var(--text-muted); }
+.field-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
 
 .field-textarea {
   resize: vertical;
@@ -151,7 +151,7 @@
 }
 
 /* ─── Date input (OS-matched) ─────────────────────────────────────────── */
-input[type="date"].field-input { color-scheme: light; }
+input[type="date"].field-input { color-scheme: dark; }
 
 /* ─── Toggle (Completed status switch) ───────────────────────────────── */
 .toggle-row {

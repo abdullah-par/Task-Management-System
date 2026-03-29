@@ -260,39 +260,46 @@ th {
   vertical-align: middle;
 }
 
-.task-row:hover td {
-  background: #fafbfc;
+/* Forced Dark Hover — prevents browser/global white-out */
+.task-table tbody tr.task-row:hover td {
+  background-color: #1c2128 !important;
+  color: #e6edf3 !important;
+  transition: none !important;
 }
 
-.completed-row { opacity: 0.55; }
+/* Use text color instead of opacity to prevent background conflicts */
+.completed-row { color: var(--text-muted); }
+.completed-row td { border-color: var(--border); }
+.completed-row .task-title { opacity: 0.6; }
 
-/* ─── Toggle Button ───────────────────────────────────────────────────── */
-.status-cell { width: 40px; }
+/* ─── Status Badge ─────────────────────────────────────────────────────── */
+.status-cell { width: 110px; }
 
-.toggle-btn {
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
-  border: 2px solid var(--border-strong);
-  background: var(--surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  font-size: 0.65rem;
-  color: transparent;
   transition: all var(--transition);
+  
+  /* Suspended/Pending: Amber/Orange (Checklist Requirement) */
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
 }
 
-.toggle-btn:hover {
-  border-color: var(--primary);
+.status-badge.completed {
+  /* Done: Green (Checklist Requirement) */
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
 }
 
-.toggle-btn.checked {
-  background: var(--success);
-  border-color: var(--success);
-  color: var(--text-inverse);
-}
+.status-badge:hover { opacity: 0.8; }
 
 /* ─── Task Title / Desc ───────────────────────────────────────────────── */
 .title-cell { max-width: 300px; }
@@ -420,4 +427,33 @@ th {
 .empty-state p {
   font-size: 0.875rem;
   margin-bottom: 1.25rem;
+}
+
+/* ─── Responsive Styles (Mobile Optimization) ────────────────────────── */
+@media (max-width: 768px) {
+  .page-header .header-content { flex-direction: column; align-items: stretch; text-align: center; }
+  .btn-primary { justify-content: center; }
+  
+  .task-table thead { display: none; } /* Hide headers on mobile */
+  
+  .task-row {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    gap: 0.75rem;
+  }
+  
+  .task-row td { padding: 0 !important; border: none !important; }
+  
+  .status-cell { order: 1; }
+  .title-cell { order: 2; width: 100%; max-width: none; }
+  .date-cell { order: 3; font-size: 0.85rem; }
+  .actions-cell { order: 4; margin-top: 0.5rem; justify-content: flex-start; }
+  
+  .stats-grid { grid-template-columns: 1fr; }
+  .filters-bar { flex-direction: column; }
+  .search-wrapper { width: 100%; }
+  .filter-group { justify-content: center; width: 100%; }
+  .filter-btn { flex: 1; text-align: center; }
 }
